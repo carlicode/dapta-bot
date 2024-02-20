@@ -15,8 +15,6 @@ from langchain.chains import RetrievalQA
 
 st.title('🦜🔗 Dapta PDF chatbot')
 
-openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')
-
 text_loader_kwargs={'autodetect_encoding': True}
 loader = DirectoryLoader('Texts', glob="**/*.txt", loader_cls=TextLoader, loader_kwargs=text_loader_kwargs)
 docs = loader.load()

@@ -11,33 +11,21 @@ from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
+from openai import OpenAI
 
 
 st.title('🦜🔗 Dapta PDF chatbot')
 
-text_loader_kwargs={'autodetect_encoding': True}
-loader = DirectoryLoader('Texts', glob="**/*.txt", loader_cls=TextLoader, loader_kwargs=text_loader_kwargs)
-docs = loader.load()
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-documents = text_splitter.split_documents(docs)
+persist_dir = 'MyVectorEmbeddings'
+vectordb = Chroma(persist_directory=persist_dir , embbedding_function=OpenAIEmbeddings)
 
-embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
-
-vectorstore = Chroma.from_documents(
-    documents=documents,
-    embedding=embeddings
-)
-
-retriever = vectorstore.as_retriever(
-    search_kwargs={"k": 3}
-    )
 
 chat = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0.0)
 
 qa_chain = RetrievalQA.from_chain_type(
-    llm=chat,
+    llm=OpenAI(),
     chain_type="stuff",
-    retriever=retriever
+    retriever=vectordb.as_retriever()
 )
 
 def generate_response(query):

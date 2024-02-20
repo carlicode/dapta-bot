@@ -9,19 +9,16 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
-from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
-from openai import OpenAI
-
 
 st.title('🦜🔗 Dapta PDF chatbot')
 
-#persist embeddings
-#persist_dir = 'MyVectorEmbeddings'
-#vectordb = Chroma(persist_directory=persist_dir , embedding_function=OpenAIEmbeddings())
+# persist embeddings
+# persist_dir = 'MyVectorEmbeddings'
+# vectordb = Chroma(persist_directory=persist_dir , embedding_function=OpenAIEmbeddings())
 
-#non persist embeddings
-text_loader_kwargs={'autodetect_encoding': True}
+# non-persist embeddings
+text_loader_kwargs = {'autodetect_encoding': True}
 loader = DirectoryLoader('Texts', glob="**/*.txt", loader_cls=TextLoader, loader_kwargs=text_loader_kwargs)
 docs = loader.load()
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -36,7 +33,7 @@ vectorstore = Chroma.from_documents(
 
 retriever = vectorstore.as_retriever(
     search_kwargs={"k": 3}
-    )
+)
 
 chat = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0.0, max_tokens=300)
 
@@ -45,11 +42,13 @@ qa_chain = RetrievalQA.from_chain_type(
     chain_type="stuff",
     retriever=retriever
 )
+
 def generate_response(query):
-    st.info(qa_chain.run(query))
+    return qa_chain.run(query)
 
 with st.form('my_form'):
     text = st.text_area('Enter text:', 'Hi')
     submitted = st.form_submit_button('Submit')
-    response = generate_response(text)
-    st.text(response)
+    if submitted:
+        response = generate_response(text)
+        st.info(response)

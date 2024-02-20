@@ -29,12 +29,21 @@ documents = text_splitter.split_documents(docs)
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
-chat = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0.0, max_tokens=100)
+vectorstore = Chroma.from_documents(
+    documents=documents,
+    embedding=embeddings
+)
+
+retriever = vectorstore.as_retriever(
+    search_kwargs={"k": 3}
+    )
+
+chat = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0.0, max_tokens=00)
 
 qa_chain = RetrievalQA.from_chain_type(
     llm=chat,
     chain_type="stuff",
-    retriever=embeddings
+    retriever=retriever
 )
 def generate_response(query):
     st.info(qa_chain.run(query))

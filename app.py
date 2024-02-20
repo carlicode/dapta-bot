@@ -51,4 +51,5 @@ with st.form('my_form'):
     submitted = st.form_submit_button('Submit')
     if submitted:
         response = generate_response(text)
-        st.info(response)
+        if response is not None:
+            st.info(response)

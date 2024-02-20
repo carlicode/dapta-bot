@@ -38,7 +38,7 @@ retriever = vectorstore.as_retriever(
     search_kwargs={"k": 3}
     )
 
-chat = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0.0, max_tokens=00)
+chat = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0.0, max_tokens=200)
 
 qa_chain = RetrievalQA.from_chain_type(
     llm=chat,

@@ -17,7 +17,7 @@ from openai import OpenAI
 st.title('🦜🔗 Dapta PDF chatbot')
 
 persist_dir = 'MyVectorEmbeddings'
-vectordb = Chroma(persist_directory=persist_dir , embbedding_function=OpenAIEmbeddings)
+vectordb = Chroma(persist_directory=persist_dir , embedding_function=OpenAIEmbeddings)
 
 
 chat = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0.0)

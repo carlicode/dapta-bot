@@ -13,7 +13,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 
 
-st.title('🦜🔗 Quickstart App')
+st.title('🦜🔗 Dapta PDF chatbot')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')
 
@@ -46,7 +46,7 @@ def generate_response(query):
     st.info(qa_chain.run(query))
 
 with st.form('my_form'):
-    text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
+    text = st.text_area('Enter text:', 'Ask me :D')
     submitted = st.form_submit_button('Submit')
     response = generate_response(text)
     st.text(response)

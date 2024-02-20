@@ -26,12 +26,11 @@ qa_chain = RetrievalQA.from_chain_type(
     chain_type="stuff",
     retriever=vectordb.as_retriever()
 )
-
 def generate_response(query):
     st.info(qa_chain.run(query))
 
 with st.form('my_form'):
-    text = st.text_area('Enter text:', 'hi')
+    text = st.text_area('Enter text:', 'how are you?')
     submitted = st.form_submit_button('Submit')
     response = generate_response(text)
     st.text(response)

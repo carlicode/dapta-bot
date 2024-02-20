@@ -44,7 +44,7 @@ def generate_response(query):
     st.info(qa_chain.run(query))
 
 with st.form('my_form'):
-    text = st.text_area('Enter text:', 'Ask me :D')
+    text = st.text_area('Enter text:', '')
     submitted = st.form_submit_button('Submit')
     response = generate_response(text)
     st.text(response)
